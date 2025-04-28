@@ -19,14 +19,14 @@ type Port {
 GRAPHQL
 
     return GraphQL::Schema->from_doc($doc, {
-      temperature => sub {
-        my ($root, $args) = @_;
-        return $snmp_model->get_temperature($args->{ip});
-      },
-      ports => sub {
-        my ($root, $args) = @_;
-        return $snmp_model->get_ports_in_use($args->{ip});
-      },
+        temperature => sub {
+            my ($root, $args, $context, $info) = @_;
+            return $snmp_model->get_temperature($args->{ip});
+        },
+        ports => sub {
+            my ($root, $args, $context, $info) = @_;
+            return $snmp_model->get_ports_in_use($args->{ip});
+        },
     });
 }
 
