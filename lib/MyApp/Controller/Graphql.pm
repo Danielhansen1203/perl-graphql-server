@@ -2,18 +2,21 @@ package MyApp::Controller::Graphql;
 use Mojo::Base 'Mojolicious::Controller';
 use MyApp::Model::SNMP;
 use MyApp::Schema::Graphql;
-use GraphQL::Execution qw(execute);
+
+# Kunne caches hvis nødvendigt
+my $schema;
 
 sub graphql {
     my $c = shift;
 
-    my $snmp_model = MyApp::Model::SNMP->new();
-    my $schema = MyApp::Schema::Graphql::schema($snmp_model);
+    $schema ||= MyApp::Schema::Graphql::schema(MyApp::Model::SNMP->new);
 
-    my $query = $c->req->json->{query};
-    my $variables = $c->req->json->{variables} || {};
-
-    my $result = execute($schema, $query, undef, undef, $variables);
+    my $result = $schema->execute(
+        $c->req->json->{query},
+        undef,
+        undef,
+        $c->req->json->{variables},
+    );
 
     $c->render(json => $result);
 }
