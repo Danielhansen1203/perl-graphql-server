@@ -26,4 +26,4 @@ RUN cpanm --notest --installdeps .
 EXPOSE 3000
 
 # Start med Hypnotoad (production server)
-CMD ["hypnotoad", "myapp.pl"]
+CMD ["hypnotoad", "-l", "http://*:3000", "myapp.pl"]
