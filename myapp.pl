@@ -37,6 +37,6 @@ my $schema = GraphQL::Schema->new(
 plugin GraphQL => { schema => $schema };
 
 # Test GET route
-get '/' => { text => 'GraphQL server is ASrunning!' };
+get '/' => { text => 'GraphQL server is ASDrunning!' };
 
 app->start;
