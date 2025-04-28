@@ -1,14 +1,21 @@
+package MyApp;
+use Mojo::Base 'Mojolicious';
+
 sub startup {
     my $self = shift;
 
     my $r = $self->routes;
 
-    # GraphQL route
-    $r->post('/graphql')->to('graphql#graphql');
+    # ROUTES
 
-    # Ekstra default route (valgfri, men hjælper hypnotoad at holde sig i live)
+    # Simple default GET route (viser serveren kører)
     $r->get('/')->to(cb => sub {
         my $c = shift;
-        $c->render(text => 'GraphQL server running');
+        $c->render(text => 'GraphQL server is running!');
     });
+
+    # GraphQL endpoint POST /graphql
+    $r->post('/graphql')->to('graphql#graphql');
 }
+
+1;
