@@ -1,6 +1,6 @@
 FROM perl:5.36
 
-# Installer nødvendige OS-pakker
+# Installér nødvendige OS-pakker
 RUN apt-get update && apt-get install -y \
     build-essential \
     libssl-dev \
@@ -10,20 +10,23 @@ RUN apt-get update && apt-get install -y \
     make \
     gcc
 
-# Installer cpanminus
+# Installér cpanminus
 RUN curl -L https://cpanmin.us | perl - App::cpanminus
 
-# Sæt arbejdsmappen
+# Arbejdsmappe
 WORKDIR /app
 
-# Kopier projektfiler
+# Kopier kode
 COPY . .
 
-# Installer Perl moduler baseret på cpanfile
+# Installér Perl dependencies
 RUN cpanm --notest --installdeps .
 
-# Eksponer porten til Mojolicious app
+# Sæt port
 EXPOSE 3000
 
-# Start med Hypnotoad (production server)
-CMD ["hypnotoad", "-l", "http://*:3000", "myapp.pl"]
+# Sæt environment variable for Mojolicious
+ENV MOJO_LISTEN=http://*:3000
+
+# Start hypnotoad
+CMD ["hypnotoad", "myapp.pl"]
