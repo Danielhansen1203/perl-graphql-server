@@ -20,12 +20,15 @@ GRAPHQL
 
     return GraphQL::Schema->from_doc($doc, {
         temperature => sub {
-            my ($root, $args, $context, $info) = @_;
-            return $snmp_model->get_temperature($args->{ip});
+            my ($root, $args) = @_;
+            return 42.0; # midlertidigt test data
         },
         ports => sub {
-            my ($root, $args, $context, $info) = @_;
-            return $snmp_model->get_ports_in_use($args->{ip});
+            my ($root, $args) = @_;
+            return [
+                { name => "eth0", status => "up" },
+                { name => "eth1", status => "down" }
+            ];
         },
     });
 }
