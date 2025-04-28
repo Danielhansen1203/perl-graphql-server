@@ -19,4 +19,4 @@ RUN cpanm --notest --installdeps .
 
 EXPOSE 3000
 
-CMD ["hypnotoad", "myapp.pl"]
+CMD ["perl", "start.pl"]
