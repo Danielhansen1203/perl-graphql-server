@@ -4,11 +4,11 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Mojolicious::Commands;
+# Sæt app-navn
+$ENV{MOJO_MODE} = 'production';
+$ENV{MOJO_APP} = 'MyApp';
+$ENV{MOJO_LISTEN} = 'http://*:3000';
+$ENV{HYPNOTOAD_FOREGROUND} = 1;
 
-# Start din app med Hypnotoad via perl
-local $ENV{MOJO_APP} = 'MyApp';
-local $ENV{HYPNOTOAD_FOREGROUND} = 1;
-local $ENV{MOJO_LISTEN} = 'http://*:3000';
-
-Mojolicious::Commands->start('hypnotoad');
+# Kør hypnotoad server korrekt
+exec 'hypnotoad', $FindBin::Bin . '/myapp.pl';
