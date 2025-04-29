@@ -4,7 +4,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libssl-dev \
     libperl-dev \
-    zlib1g-dev \
+    pkg-config \
+    libexpat1-dev \
     curl \
     make \
     gcc
@@ -12,11 +13,11 @@ RUN apt-get update && apt-get install -y \
 RUN curl -L https://cpanmin.us | perl - App::cpanminus
 
 WORKDIR /app
-
 COPY . .
 
-RUN cpanm --notest --installdeps .
+RUN cpanm --notest Mojolicious GraphQL GraphQL::Plugin::Convert Mojolicious::Plugin::GraphQL JSON::MaybeXS Try::Tiny Moo Role::Tiny
 
-EXPOSE 3000
 ENV PERL5LIB=/app/lib
-CMD ["perl", "start.pl"]
+EXPOSE 3000
+
+CMD ["perl", "myapp.pl"]
