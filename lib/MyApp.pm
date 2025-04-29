@@ -1,6 +1,5 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
-
 use GraphQL::Plugin::Convert qw(to_graphql);
 
 sub startup {

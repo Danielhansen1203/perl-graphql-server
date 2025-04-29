@@ -4,4 +4,6 @@ use warnings;
 use lib 'lib';
 use MyApp;
 
+print "Loading MyApp from: $INC{'MyApp.pm'}\n";
+
 MyApp->new->start;
