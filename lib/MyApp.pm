@@ -1,37 +1,32 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
 
-use GraphQL::Schema;
-use GraphQL::Type::Object;
-use GraphQL::Type::Scalar;
-use GraphQL::Execution;
+use GraphQL::Plugin::Convert qw(to_graphql);
 
 sub startup {
     my $self = shift;
 
     $self->config(
         hypnotoad => {
-            listen  => ['http://*:3000'],
+            listen => ['http://*:3000'],
             workers => 2,
             proxy   => 1,
         }
     );
 
-    my $query = GraphQL::Type::Object->new(
-        name   => 'Query',
-        fields => {
+    my $schema = to_graphql([
+        {
             hello => {
-                type    => GraphQL::Type::Scalar->new(name => 'String'),
-                resolve => sub { return "Hello World!" },
+                type => 'String',
+                resolve => sub {
+                    return "Hello from GraphQL!";
+                },
             },
-        },
-    );
-
-    my $schema = GraphQL::Schema->new(query => $query);
+        }
+    ]);
 
     $self->plugin('GraphQL' => {
-        schema    => $schema,
-        serialize => \&GraphQL::Execution::serialize,
+        schema => $schema,
     });
 
     my $r = $self->routes;
