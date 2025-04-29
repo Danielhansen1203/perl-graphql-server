@@ -18,5 +18,5 @@ COPY . .
 RUN cpanm --notest --installdeps .
 
 EXPOSE 3000
-
+ENV PERL5LIB=/app/lib
 CMD ["perl", "start.pl"]
