@@ -2,10 +2,12 @@ package MyApp::Controller::Graphql;
 use Mojo::Base 'Mojolicious::Controller';
 use MyApp::Schema::Graphql;
 
-my $schema = MyApp::Schema::Graphql::schema();
+my $schema;
 
 sub graphql {
     my $c = shift;
+
+    $schema ||= MyApp::Schema::Graphql->new->graphql_schema;
 
     my $data = $c->req->json;
 

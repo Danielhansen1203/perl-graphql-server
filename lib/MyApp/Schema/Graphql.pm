@@ -1,45 +1,36 @@
 package MyApp::Schema::Graphql;
 use strict;
 use warnings;
-use GraphQL::Schema;
-use GraphQL::Type::Object;
-use GraphQL::Type::Scalar;
+use Moo;
+use GraphQL::Plugin::Convert qw(to_graphql);
 
-sub schema {
-    my ($snmp_model) = @_;
+# Moo-style Objekt
+has snmp_model => (is => 'ro');
 
-    my $Query = GraphQL::Type::Object->new(
-        name => 'Query',
-        fields => {
-            temperature => {
-                type => GraphQL::Type::Scalar->new(name => 'Float'),
-                args => { ip => { type => GraphQL::Type::Scalar->new(name => 'String') } },
-                resolve => sub {
-                    my ($root, $args, $context, $info) = @_;
-                    return 22.5; # dummy temperatur
-                },
-            },
-            ports => {
-                type => GraphQL::Type::List->new(of => GraphQL::Type::Object->new(
-                    name => 'Port',
-                    fields => {
-                        name => { type => GraphQL::Type::Scalar->new(name => 'String') },
-                        status => { type => GraphQL::Type::Scalar->new(name => 'String') },
-                    }
-                )),
-                args => { ip => { type => GraphQL::Type::Scalar->new(name => 'String') } },
-                resolve => sub {
-                    my ($root, $args, $context, $info) = @_;
-                    return [
-                        { name => "eth0", status => "up" },
-                        { name => "eth1", status => "down" },
-                    ];
-                },
-            },
+sub graphql_schema {
+    my ($self) = @_;
+
+    return to_graphql([{
+        temperature => {
+            args => { ip => { type => 'String!' } },
+            type => 'Float',
+            resolve => sub {
+                my ($root, $args, $context, $info) = @_;
+                return 22.5; # Dummy temperatur
+            }
+        },
+        ports => {
+            args => { ip => { type => 'String!' } },
+            type => ['Port'],
+            resolve => sub {
+                my ($root, $args, $context, $info) = @_;
+                return [
+                    { name => 'eth0', status => 'up' },
+                    { name => 'eth1', status => 'down' },
+                ];
+            }
         }
-    );
-
-    return GraphQL::Schema->new(query => $Query);
+    }], [qw(Port name status)]);
 }
 
 1;
