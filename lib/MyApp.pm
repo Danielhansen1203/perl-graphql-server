@@ -1,5 +1,6 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
+use MyApp::Schema::Graphql;
 
 sub startup {
     my $self = shift;
@@ -16,14 +17,18 @@ sub startup {
     # Routes
     my $r = $self->routes;
 
+    $self->plugin('GraphQL', {
+        schema => MyApp::Schema::Graphql->new->graphql_schema
+    });
+
+    $r->post('/graphql')->to('GraphQL#execute');
+
     # Simple GET route
     $r->get('/')->to(cb => sub {
         my $c = shift;
         $c->render(text => 'GraphQL server is running!');
     });
 
-    # GraphQL endpoint
-    $r->post('/graphql')->to('graphql#graphql');
 }
 
 1;
