@@ -1,19 +1,21 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
-use GraphQL::Plugin::Convert qw(to_graphql);
+
+use GraphQL::Plugin::Convert ();  # <-- Brug uden qw(), vi kalder direkte
 
 sub startup {
     my $self = shift;
 
     $self->config(
         hypnotoad => {
-            listen => ['http://*:3000'],
+            listen  => ['http://*:3000'],
             workers => 2,
             proxy   => 1,
         }
     );
 
-    my $schema = to_graphql([
+    # Brug to_graphql med fuldt navn
+    my $schema = GraphQL::Plugin::Convert::to_graphql([
         {
             hello => {
                 type => 'String',
