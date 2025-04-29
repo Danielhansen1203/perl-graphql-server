@@ -3,38 +3,37 @@ use Mojo::Base 'Mojolicious';
 use GraphQL::Schema;
 use GraphQL::Type::Object;
 use GraphQL::Type::Scalar;
+use GraphQL::Execution qw(execute serialize);  # ← nødvendigt
 
 sub startup {
     my $self = shift;
 
-    # Hypnotoad config (for docker port 3000)
     $self->config(
         hypnotoad => {
-            listen => ['http://*:3000'],
+            listen  => ['http://*:3000'],
             workers => 2,
             proxy   => 1,
         }
     );
 
-    # Byg GraphQL schema direkte
+    # Byg mini schema
     my $query = GraphQL::Type::Object->new(
-        name => 'Query',
+        name   => 'Query',
         fields => {
             hello => {
-                type => GraphQL::Type::Scalar->new(name => 'String'),
-                resolve => sub {
-                    return "Hello World!";
-                },
+                type    => GraphQL::Type::Scalar->new(name => 'String'),
+                resolve => sub { return "Hello World!" },
             },
         },
     );
 
     my $schema = GraphQL::Schema->new(query => $query);
 
-    # Plugin
-    $self->plugin('GraphQL' => { schema => $schema });
+    $self->plugin('GraphQL' => {
+        schema    => $schema,
+        serialize => \&serialize,  # ← her er fixet!
+    });
 
-    # Routes
     my $r = $self->routes;
     $r->post('/graphql')->to('GraphQL#execute');
     $r->get('/')->to(cb => sub {
