@@ -4,21 +4,21 @@ use Mojo::Base 'Mojolicious';
 use GraphQL::Schema;
 use GraphQL::Type::Object;
 use GraphQL::Type::Scalar;
-use GraphQL::Execution qw(serialize);
+use GraphQL::Execution;
 
 sub startup {
     my $self = shift;
 
     $self->config(
         hypnotoad => {
-            listen => ['http://*:3000'],
+            listen  => ['http://*:3000'],
             workers => 2,
             proxy   => 1,
         }
     );
 
     my $query = GraphQL::Type::Object->new(
-        name => 'Query',
+        name   => 'Query',
         fields => {
             hello => {
                 type    => GraphQL::Type::Scalar->new(name => 'String'),
@@ -31,7 +31,7 @@ sub startup {
 
     $self->plugin('GraphQL' => {
         schema    => $schema,
-        serialize => \&serialize,
+        serialize => \&GraphQL::Execution::serialize,
     });
 
     my $r = $self->routes;
