@@ -1,11 +1,13 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
-use MyApp::Schema::Graphql;
+use GraphQL::Schema;
+use GraphQL::Type::Object;
+use GraphQL::Type::Scalar;
 
 sub startup {
     my $self = shift;
 
-    # Fortæl serveren at den skal lytte på 0.0.0.0:3000
+    # Hypnotoad config (for docker port 3000)
     $self->config(
         hypnotoad => {
             listen => ['http://*:3000'],
@@ -14,21 +16,31 @@ sub startup {
         }
     );
 
+    # Byg GraphQL schema direkte
+    my $query = GraphQL::Type::Object->new(
+        name => 'Query',
+        fields => {
+            hello => {
+                type => GraphQL::Type::Scalar->new(name => 'String'),
+                resolve => sub {
+                    return "Hello World!";
+                },
+            },
+        },
+    );
+
+    my $schema = GraphQL::Schema->new(query => $query);
+
+    # Plugin
+    $self->plugin('GraphQL' => { schema => $schema });
+
     # Routes
     my $r = $self->routes;
-
-    $self->plugin('GraphQL', {
-        schema => MyApp::Schema::Graphql->new->graphql_schema
-    });
-
     $r->post('/graphql')->to('GraphQL#execute');
-
-    # Simple GET route
     $r->get('/')->to(cb => sub {
         my $c = shift;
         $c->render(text => 'GraphQL server is running!');
     });
-
 }
 
 1;
