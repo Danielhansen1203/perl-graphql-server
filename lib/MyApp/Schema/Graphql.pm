@@ -4,33 +4,17 @@ use warnings;
 use GraphQL::Schema;
 
 sub schema {
-    my ($snmp_model) = @_;
-
-    my $doc = <<'GRAPHQL';
-type Query {
-  temperature(ip: String!): Float
-  ports(ip: String!): [Port]
-}
-
-type Port {
-  name: String
-  status: String
-}
-GRAPHQL
-
-    return GraphQL::Schema->from_doc($doc, {
-        temperature => sub {
-            my ($root, $args) = @_;
-            return 42.0; # midlertidigt test data
-        },
-        ports => sub {
-            my ($root, $args) = @_;
-            return [
-                { name => "eth0", status => "up" },
-                { name => "eth1", status => "down" }
-            ];
-        },
+    return GraphQL::Schema->from_doc(<<'GRAPHQL', {
+        hello => sub { "Hello World" },
     });
 }
 
 1;
+
+__DATA__
+
+GRAPHQL
+type Query {
+  hello: String
+}
+GRAPHQL
