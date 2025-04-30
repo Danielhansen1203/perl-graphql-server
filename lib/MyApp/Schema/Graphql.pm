@@ -9,10 +9,14 @@ sub graphql_schema {
 
     return GraphQL::Schema->from_doc(
         <<'EOF',
+    schema {
+         query: Query
+        }
 type Query {
   sysdescr(ip: String!): String
 }
 EOF
+
         ,
         {
             sysdescr => sub {
