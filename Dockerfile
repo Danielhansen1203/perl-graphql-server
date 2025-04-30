@@ -20,4 +20,4 @@ RUN cpanm --notest Mojolicious GraphQL GraphQL::Plugin::Convert Mojolicious::Plu
 ENV PERL5LIB=/app/lib
 EXPOSE 3000
 
-CMD ["perl", "myapp.pl"]
+CMD ["hypnotoad", "myapp.pl"]
