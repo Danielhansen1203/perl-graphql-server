@@ -8,11 +8,11 @@ sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
     return GraphQL::Schema->from_doc(
-        <<'GRAPHQL',
+        <<'EOF',
 type Query {
   sysdescr(ip: String!): String
 }
-GRAPHQL
+EOF
         ,
         {
             sysdescr => sub {
