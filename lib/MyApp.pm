@@ -13,18 +13,16 @@ sub startup {
         }
     );
 
-    # Brug GraphQL::Schema->from_doc direkte
-    my $schema = GraphQL::Schema->from_doc(<<'GRAPHQL', {
-      hello => sub {
-        return "Hello from GraphQL!";
-      }
-    });
-
-type Query {
-  hello: String
+ 
+ my $schema = GraphQL::Schema->from_doc(<<'EOF');
+type User {
+  id: String
+  name: String
 }
-GRAPHQL
-    );
+type Query {
+  user(id: String): User
+}
+EOF
 
     $self->plugin('GraphQL' => {
         schema => $schema,
