@@ -7,11 +7,12 @@ use GraphQL::Plugin::Convert qw(to_graphql);
 sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
-    return GraphQL::Schema->from_doc(
-        <<'EOF',
-    schema {
-         query: Query
-        }
+return GraphQL::Schema->from_doc(
+    <<'EOF',
+schema {
+  query: Query
+}
+
 type Query {
   sysdescr(ip: String!): String
 }
