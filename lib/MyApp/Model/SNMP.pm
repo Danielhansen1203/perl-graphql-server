@@ -3,24 +3,25 @@ use strict;
 use warnings;
 use Net::SNMP;
 
-sub resolve_getInterfaceStatus {
-  my ($root, $args, $context, $info) = @_;
+sub new {
+    my ($class) = @_;
+    return bless {}, $class;
+}
 
-  my $ip  = $args->{ip};
-  my $oid = $args->{oid};  # f.eks. .1.3.6.1.2.1.2.2.1.8.1 for ifOperStatus
+sub get_sysdescr {
+    my ($self, $ip) = @_;
+    my ($session, $error) = Net::SNMP->session(
+        -hostname  => $ip,
+        -community => 'public',
+        -version   => 'snmpv2c',
+    );
 
-  my ($session, $error) = Net::SNMP->session(
-    -hostname  => $ip,
-    -community => 'public',
-    -version   => 'snmpv2c'
-  );
+    return undef unless $session;
 
-  return $error unless defined $session;
+    my $result = $session->get_request(-varbindlist => ['1.3.6.1.2.1.1.1.0']);  # sysDescr.0
+    $session->close;
 
-  my $result = $session->get_request(-varbindlist => [$oid]);
-  $session->close;
-
-  return $result->{$oid} // 'No data';
+    return $result->{'1.3.6.1.2.1.1.1.0'} || 'unknown';
 }
 
 1;
