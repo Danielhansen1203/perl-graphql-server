@@ -28,6 +28,14 @@ my $fakedb = {
   b => { id => 'b', name => 'bob' },
 };
 
+my $root_value = {
+  user => sub {
+    my $id = shift->{id};
+    die "No user $id\n" if !$fakedb->{$id};
+    $fakedb->{$id}
+  },
+};
+
     $self->plugin('GraphQL' => {
         schema => $schema,
     });
