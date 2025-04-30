@@ -6,21 +6,23 @@ use GraphQL::Schema;
 sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
-    return GraphQL::Schema->from_doc({
-        doc => <<'EOF',
+    my $sdl = <<'EOF';
 type Query {
-  sysdescr(ip: String!): String
+  interfaceStatus(ip: String!, oid: String!): String
 }
 EOF
-        resolvers => {
+
+    return GraphQL::Schema->from_doc(
+        $sdl,
+        {
             Query => {
-                sysdescr => sub {
+                interfaceStatus => sub {
                     my ($root, $args) = @_;
-                    return $snmp_model->get_sysdescr($args->{ip});
+                    return $snmp_model->get_interface_status($args->{ip}, $args->{oid});
                 },
             },
-        },
-    });
+        }
+    );
 }
 
 1;

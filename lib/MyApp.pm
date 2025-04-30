@@ -1,8 +1,7 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
-
-use MyApp::Model::SNMP;
 use MyApp::Schema::Graphql;
+use MyApp::Model::SNMP;
 
 sub startup {
     my $self = shift;
@@ -15,18 +14,12 @@ sub startup {
         }
     );
 
-    my $snmp = MyApp::Model::SNMP->new;
+    # Helper til SNMP-model
+    $self->helper(snmp_model => sub { MyApp::Model::SNMP->new });
 
-    $self->plugin('GraphQL' => {
-        schema => MyApp::Schema::Graphql->graphql_schema($snmp)
-    });
-
+    # Routes
     my $r = $self->routes;
-    $r->post('/graphql')->to('GraphQL#execute');
-      $r->get('/')->to(cb => sub {
-        my $c = shift;
-        $c->render(text => 'GraphQL server is running!');
-    });
+    $r->post('/graphql')->to('graphql#graphql');
 }
 
 1;
