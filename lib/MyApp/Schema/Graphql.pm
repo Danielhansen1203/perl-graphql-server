@@ -18,20 +18,14 @@ type Query {
 EOF
         ,
         {
-            sysdescr => sub {
-                my ($root, $args) = @_;
-                return $snmp_model->get_sysdescr($args->{ip});
+            Query => {
+                sysdescr => sub {
+                    my ($root, $args) = @_;
+                    return $snmp_model->get_sysdescr($args->{ip});
+                },
             },
         }
     );
-
-$self->plugin('GraphQL' => {
-  schema => $schema,
-  # ingen root_value her!
-});
-
 }
-
-
 
 1;
