@@ -1,3 +1,8 @@
+package MyApp::Schema::Graphql;
+use strict;
+use warnings;
+use GraphQL::Schema;
+
 sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
@@ -16,4 +21,6 @@ EOF
         }
     );
 }
+1;
+
 1;
