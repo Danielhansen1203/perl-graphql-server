@@ -38,6 +38,7 @@ my $root_value = {
 
     $self->plugin('GraphQL' => {
         schema => $schema,
+        root_value  => $root_value,
     });
 
     my $r = $self->routes;
