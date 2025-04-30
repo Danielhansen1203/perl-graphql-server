@@ -13,8 +13,8 @@ sub startup {
         }
     );
 
- 
- my $schema = GraphQL::Schema->from_doc(<<'EOF');
+    my $schema = GraphQL::Schema->from_doc(
+        <<'EOF',
 type User {
   id: String
   name: String
@@ -23,6 +23,17 @@ type Query {
   user(id: String): User
 }
 EOF
+        ,
+        {
+            user => sub {
+                my ($root, $args) = @_;
+                return {
+                    id   => $args->{id},
+                    name => "Hardcoded User"
+                };
+            }
+        }
+    );
 
     $self->plugin('GraphQL' => {
         schema => $schema,
