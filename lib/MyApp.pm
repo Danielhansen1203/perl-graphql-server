@@ -18,14 +18,15 @@ sub startup {
 type User {
   id: String
   name: String
+  age: Float
 }
 type Query {
   user(id: String): User
 }
 EOF
 my $fakedb = {
-  a => { id => 'a', name => 'alice' },
-  b => { id => 'b', name => 'bob' },
+  a => { id => 'a', name => 'alice', age => 12 },
+  b => { id => 'b', name => 'bob', age => 13 },
 };
 
 my $root_value = {
