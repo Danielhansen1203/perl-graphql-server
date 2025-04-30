@@ -24,6 +24,14 @@ EOF
             },
         }
     );
+
+$self->plugin('GraphQL' => {
+  schema => $schema,
+  # ingen root_value her!
+});
+
 }
+
+
 
 1;
