@@ -15,7 +15,7 @@ RUN curl -L https://cpanmin.us | perl - App::cpanminus
 WORKDIR /app
 COPY . .
 
-RUN cpanm --notest Mojolicious GraphQL GraphQL::Plugin::Convert Mojolicious::Plugin::GraphQL JSON::MaybeXS Try::Tiny Moo Role::Tiny
+RUN cpanm --notest Mojolicious GraphQL GraphQL::Plugin::Convert Mojolicious::Plugin::GraphQL JSON::MaybeXS Try::Tiny Moo Role::Tiny Net::SNMP
 
 ENV PERL5LIB=/app/lib
 EXPOSE 3000
