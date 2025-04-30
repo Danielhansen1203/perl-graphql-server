@@ -2,13 +2,12 @@ package MyApp::Schema::Graphql;
 use strict;
 use warnings;
 use GraphQL::Schema;
-use GraphQL::Plugin::Convert qw(to_graphql);
 
 sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
-return GraphQL::Schema->from_doc(
-    <<'EOF',
+    return GraphQL::Schema->from_doc(
+        <<'EOF',
 schema {
   query: Query
 }
@@ -17,7 +16,6 @@ type Query {
   sysdescr(ip: String!): String
 }
 EOF
-
         ,
         {
             sysdescr => sub {
