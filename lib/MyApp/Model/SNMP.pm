@@ -3,6 +3,11 @@ use strict;
 use warnings;
 use Net::SNMP;
 
+sub new {
+    my ($class) = @_;
+    return bless {}, $class;
+}
+
 sub get_interface_status {
     my ($self, $ip, $oid) = @_;
 
