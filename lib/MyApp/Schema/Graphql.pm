@@ -6,13 +6,8 @@ use GraphQL::Schema;
 sub graphql_schema {
     my ($class, $snmp_model) = @_;
 
-   return GraphQL::Schema->from_doc(
-    {
+    return GraphQL::Schema->from_doc({
         doc => <<'EOF',
-schema {
-  query: Query
-}
-
 type Query {
   sysdescr(ip: String!): String
 }
@@ -25,9 +20,7 @@ EOF
                 },
             },
         },
-    }
-);
-
+    });
 }
 
 1;
