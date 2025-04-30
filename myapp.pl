@@ -4,6 +4,6 @@ use warnings;
 use lib 'lib';
 use MyApp;
 
-print "Loading MyApp from: $INC{'MyApp.pm'}\n";
+$ENV{HYPNOTOAD_FOREGROUND} = 1;
 
 MyApp->new->start;
