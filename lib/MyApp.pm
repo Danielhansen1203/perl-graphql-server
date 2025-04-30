@@ -1,7 +1,6 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
-
-use GraphQL::Plugin::Convert ();  # <-- Brug uden qw(), vi kalder direkte
+use GraphQL::Schema;
 
 sub startup {
     my $self = shift;
@@ -14,17 +13,18 @@ sub startup {
         }
     );
 
-    # Brug to_graphql med fuldt navn
-    my $schema = GraphQL::Plugin::Convert::to_graphql([
-        {
-            hello => {
-                type => 'String',
-                resolve => sub {
-                    return "Hello from GraphQL!";
-                },
-            },
-        }
-    ]);
+    # Brug GraphQL::Schema->from_doc direkte
+    my $schema = GraphQL::Schema->from_doc(<<'GRAPHQL', {
+      hello => sub {
+        return "Hello from GraphQL!";
+      }
+    });
+
+type Query {
+  hello: String
+}
+GRAPHQL
+    );
 
     $self->plugin('GraphQL' => {
         schema => $schema,
