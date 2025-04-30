@@ -1,21 +1,27 @@
 package MyApp::Model::SNMP;
 use strict;
 use warnings;
+use Net::SNMP;
 
-sub new { bless {}, shift }
-
-# Fake metoder
-sub get_temperature {
-    my ($self, $ip) = @_;
-    return 22.5;
+sub new {
+    my ($class) = @_;
+    return bless {}, $class;
 }
 
-sub get_ports_in_use {
+sub get_sysdescr {
     my ($self, $ip) = @_;
-    return [
-        { name => 'port1', status => 'up' },
-        { name => 'port2', status => 'down' },
-    ];
+    my ($session, $error) = Net::SNMP->session(
+        -hostname  => $ip,
+        -community => 'public',
+        -version   => 'snmpv2c',
+    );
+
+    return undef unless $session;
+
+    my $result = $session->get_request(-varbindlist => ['1.3.6.1.2.1.1.1.0']);  # sysDescr.0
+    $session->close;
+
+    return $result->{'1.3.6.1.2.1.1.1.0'} || 'unknown';
 }
 
 1;

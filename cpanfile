@@ -7,3 +7,4 @@ requires 'JSON::MaybeXS';
 requires 'Try::Tiny';
 requires 'Moo';
 requires 'Role::Tiny';
+requires 'Net::SNMP';
