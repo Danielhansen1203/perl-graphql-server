@@ -4,34 +4,26 @@ use MyApp::Schema::Graphql;
 use GraphQL::Execution;
 use Data::Dumper;
 
-my $schema;
-
 sub execute {
-    my $c = shift;
-
-    $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
-
-    my $data = $c->req->json || {};
-
-    $c->app->log->debug("RAW JSON data: " . Dumper($data));
-
-    # Beskyt operationName
-    my $opname = $data->{operationName};
-    $opname = undef unless defined($opname) && !ref($opname);
-
-warn "operationName: ", Dumper($opname);
-
-
-    my $result = GraphQL::Execution::execute(
-        $schema->{schema},
-        $data->{query},
-        $opname,
-        undef,
-        $data->{variables} || {},
-        $schema->{root_value}
-    );
-
-    $c->render(json => $result);
+  my $c      = shift;
+  my $body   = $c->req->json;               # JSON-indhold fra klienten
+  my $query  = $body->{query};
+  my $vars   = $body->{variables} || {};    # eventuelle variabler
+  my $opname = $body->{operationName};      # operationName fra input
+  
+  warn "operationName: ", Dumper($opname);  # Debug: log værdien af operationName
+  
+  my $result = GraphQL::Execution->execute(
+      $schema,
+      $query,
+      $root_value,
+      undef,               # kontekst (f.eks. $c->req->headers eller undef)
+      $vars,
+      $opname,             # operationName parameteren
+      undef                # field resolver (valgfrit)
+  );
+  $c->render(json => $result);
 }
+
 
 1;
