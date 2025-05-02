@@ -12,7 +12,7 @@ sub execute {
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
-    $c->app->log->debug("RAW JSON data: " . Dumper($data));
+    
 
     # Undgå fejl hvis operationName er et hash
     my $opname = $data->{operationName};
@@ -26,7 +26,7 @@ my $result = GraphQL::Execution::execute(
     $data->{variables} || {},
     $schema->{root_value}
 );
-
+$c->app->log->debug("1");
 
     $c->render(json => $result);
 }

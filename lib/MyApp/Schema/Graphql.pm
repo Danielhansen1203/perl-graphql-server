@@ -4,6 +4,7 @@ use warnings;
 use GraphQL::Schema;
 
 sub build {
+    warn "Step 1";
     my ($snmp_model) = @_;
 
     my $sdl = <<'GRAPHQL';
