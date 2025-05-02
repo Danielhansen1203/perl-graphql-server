@@ -10,7 +10,14 @@ sub execute {
 
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
-    my $data = $c->req->json;
+    my $data = $c->req->json || {};
+
+    unless ($data->{query}) {
+        return $c->render(
+            status => 400,
+            json   => { error => 'Missing GraphQL query' }
+        );
+    }
 
     my $result = GraphQL::Execution::execute(
         $schema->{schema},
@@ -23,5 +30,6 @@ sub execute {
 
     $c->render(json => $result);
 }
+
 
 1;
