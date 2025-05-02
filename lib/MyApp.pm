@@ -18,7 +18,7 @@ sub startup {
     my $schema = GraphQL::Schema->from_doc(<<'GRAPHQL');
 type Query {
   interfaceStatus(ip: String!, oid: String!): String
-  hejAbkat(): String
+  hejAbkat: String
 }
 GRAPHQL
 
