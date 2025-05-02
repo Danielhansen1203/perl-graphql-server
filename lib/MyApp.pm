@@ -18,6 +18,7 @@ sub startup {
     my $schema = GraphQL::Schema->from_doc(<<'GRAPHQL');
 type Query {
   interfaceStatus(ip: String!, oid: String!): String
+  hejAbkat(): String
 }
 GRAPHQL
 
@@ -27,8 +28,12 @@ GRAPHQL
     # Root resolvers
     my $root_value = {
         interfaceStatus => sub {
-            my ($args, $context, $info) = @_;
+            my ($args) = @_;
             return $snmp->get_interface_status($args->{ip}, $args->{oid});
+        },
+        hejAbkat => sub {
+            my ($args) = @_;
+            return "Hvis dette virker er det insane!"
         },
     };
 
