@@ -29,7 +29,6 @@ sub execute {
     undef,                            # 4. context_value
     $data->{variables} || {},         # 5. variables
     $opname                           # 6. operationName
-    # optional: field resolver (7)
 );
 
 
