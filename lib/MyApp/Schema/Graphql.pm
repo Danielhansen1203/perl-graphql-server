@@ -25,7 +25,6 @@ warn "Steps 2";
     };
 
     return {
-        warn "Steps 4";
         schema      => GraphQL::Schema->from_doc($sdl),
         root_value  => $root_value,
     };

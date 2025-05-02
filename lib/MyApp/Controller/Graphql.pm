@@ -8,7 +8,7 @@ my $schema;
 
 sub execute {
     my $c = shift;
-
+warn "kommer jeg ind ?";
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
