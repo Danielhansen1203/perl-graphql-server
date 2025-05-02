@@ -13,7 +13,7 @@ sub startup {
 
     my $snmp    = MyApp::Model::SNMP->new;
     my $schema  = MyApp::Schema::Graphql::build($snmp);
-
+warn "Step 3";
     my $r = $self->routes;
     $r->get('/')->to(cb => sub { shift->render(text => 'GraphQL app is running') });
     $r->post('/graphql')->to('graphql#execute');
