@@ -8,7 +8,6 @@ my $schema;
 sub execute {
     my $c = shift;
 
-    $c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
@@ -28,7 +27,7 @@ sub execute {
         $data->{variables} || {},
         $schema->{root_value}
     );
-
+$c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
     $c->render(json => $result);
 }
 
