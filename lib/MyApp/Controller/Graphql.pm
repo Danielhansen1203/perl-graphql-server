@@ -8,7 +8,6 @@ my $schema;
 
 sub execute {
     my $c = shift;
-warn "kommer jeg ind ?";
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
@@ -26,9 +25,9 @@ my $result = GraphQL::Execution::execute(
     $data->{variables} || {},
     $schema->{root_value}
 );
-warn "Step 1";
 
     $c->render(json => $result);
+    $c->app->log->debug("RAW JSON data: " . Dumper($c->render(json => $result)));
 }
 
 1;
