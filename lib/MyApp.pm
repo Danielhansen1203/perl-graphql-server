@@ -16,6 +16,7 @@ sub startup {
 
     my $r = $self->routes;
     $r->get('/')->to(cb => sub { shift->render(text => 'GraphQL app is running') });
+    $c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
     $r->post('/graphql')->to('graphql#execute');
     $r->get('/')->to('main#index');
 }
