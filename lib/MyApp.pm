@@ -15,3 +15,5 @@ sub startup {
     $r->post('/graphql')->to('GraphQL#execute');
     $r->get('/')->to('main#index');
 }
+
+1;
