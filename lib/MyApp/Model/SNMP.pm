@@ -2,7 +2,7 @@ package MyApp::Model::SNMP;
 use Moo;
 use Net::SNMP;
 
-sub get_interface_status {
+sub get_snmp_info {
     my ($self, $ip, $oid) = @_;
 
     my ($session, $error) = Net::SNMP->session(

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SNMP GraphQL Tester</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>GraphQL SNMP-opslag</h1>
+
+  <form id="snmp-form">
+    <label>IP:
+      <input type="text" name="ip" id="ip" required>
+    </label><br>
+    <label>OID:
+      <input type="text" name="oid" id="oid" required>
+    </label><br>
+    <button type="submit">Hent data</button>
+  </form>
+
+  <pre id="output"></pre>
+
+  <script>
+    document.getElementById('snmp-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const ip = document.getElementById('ip').value;
+      const oid = document.getElementById('oid').value;
+
+      const response = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `query($ip: String!, $oid: String!) {
+            interfaceStatus(ip: $ip, oid: $oid)
+          }`,
+          variables: { ip, oid }
+        })
+      });
+
+      const data = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

@@ -3,24 +3,30 @@ use strict;
 use warnings;
 use GraphQL::Schema;
 
-sub graphql_schema {
-    my ($class, $snmp_model) = @_;
+sub build {
+    my ($snmp_model) = @_;
 
-    my $sdl = <<'EOF';
+    my $sdl = <<'GRAPHQL';
 type Query {
-  hello: String
+  GetSNMPInfo(ip: String!, oid: String!): String
+  hejAbkat: String
 }
-EOF
+GRAPHQL
 
-    return GraphQL::Schema->from_doc(
-        $sdl,
-        {
-            Query => {
-                hello => sub { return "world" },
-            },
-        }
-    );
+    my $root_value = {
+        GetSNMPInfo => sub {
+            my ($args) = @_;
+            return $snmp_model->get_snmp_info($args->{ip}, $args->{oid});
+        },
+        hejAbkat => sub {
+            return "Hvis dette virker er det insane!";
+        },
+    };
+
+    return {
+        schema      => GraphQL::Schema->from_doc($sdl),
+        root_value  => $root_value,
+    };
 }
-1;
 
 1;
