@@ -23,13 +23,17 @@ sub execute {
     warn "operationName: ", Dumper($opname);
 
     my $result = GraphQL::Execution::execute(
-        $schema,
-        $data->{query},
-        $opname,
-        undef,
-        $data->{variables} || {},
-        $root_value
-    );
+    $schema,
+    $data->{query},
+    $root_value,                      # 3. param: root_value
+    undef,                            # 4. context_value
+    $data->{variables} || {},         # 5. variables
+    $opname                           # 6. operationName
+    # optional: field resolver (7)
+);
+
+
+
 
     $c->render(json => $result);
 }
