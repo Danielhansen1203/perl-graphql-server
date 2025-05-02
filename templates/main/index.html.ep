@@ -8,7 +8,7 @@
   <h1>GraphQL SNMP-opslag</h1>
 
   <form id="snmp-form">
-    <label>IP euw:
+    <label>IP:
       <input type="text" name="ip" id="ip" required>
     </label><br>
     <label>OID:
