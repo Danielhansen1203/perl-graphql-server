@@ -25,14 +25,15 @@ sub execute {
 
     $c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
 
-    my $result = GraphQL::Execution::execute(
-        $schema->{schema},
-        $data->{query},
-        undef,
-        undef,
-        $data->{variables} || {},
-        $schema->{root_value}
-    );
+my $result = GraphQL::Execution::execute(
+    $schema->{schema},
+    $data->{query},
+    $data->{operationName} // undef,    # <--- tilføjet dette
+    undef,
+    $data->{variables} || {},
+    $schema->{root_value}
+);
+
 
     $c->render(json => $result);
 }
