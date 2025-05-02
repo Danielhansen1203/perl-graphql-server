@@ -19,7 +19,7 @@ warn "Steps 2";
             return $snmp_model->get_snmp_info($args->{ip}, $args->{oid});
         },
         hejAbkat => sub {
-            warn "Steps 3";
+            my ($args) = @_;
             return "Hvis dette virker er det insane!";
         },
     };
