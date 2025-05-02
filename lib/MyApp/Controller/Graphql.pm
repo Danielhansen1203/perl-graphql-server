@@ -19,6 +19,9 @@ sub execute {
     my $opname = $data->{operationName};
     $opname = undef unless defined($opname) && !ref($opname);
 
+warn "operationName: ", Dumper($opname);
+
+
     my $result = GraphQL::Execution::execute(
         $schema->{schema},
         $data->{query},
