@@ -12,12 +12,14 @@ sub execute {
 
     my $data = $c->req->json || {};
 
-    unless ($data->{query}) {
+    unless ($data->{query} && $data->{query} =~ /\S/) {
         return $c->render(
             status => 400,
-            json   => { error => 'Missing GraphQL query' }
+            json   => { error => 'Missing or empty GraphQL query' }
         );
     }
+
+    $c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
 
     my $result = GraphQL::Execution::execute(
         $schema->{schema},
@@ -27,7 +29,7 @@ sub execute {
         $data->{variables} || {},
         $schema->{root_value}
     );
-$c->app->log->debug("GraphQL query: " . ($data->{query} // '[undef]'));
+
     $c->render(json => $result);
 }
 
