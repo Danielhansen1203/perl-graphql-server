@@ -1,3 +1,4 @@
+use Mojo::Base 'Mojolicious';
 use MyApp::Model::SNMP;
 use MyApp::Schema::Graphql;
 
