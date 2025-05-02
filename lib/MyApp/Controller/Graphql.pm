@@ -2,6 +2,7 @@ package MyApp::Controller::Graphql;
 use Mojo::Base 'Mojolicious::Controller';
 use MyApp::Schema::Graphql;
 use GraphQL::Execution;
+use Data::Dumper;
 
 my $schema;
 
@@ -11,6 +12,9 @@ sub execute {
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
+
+    use Data::Dumper;
+    $c->app->log->debug("RAW JSON data: " . Dumper($data));
 
     unless ($data->{query} && $data->{query} =~ /\S/) {
         return $c->render(
@@ -32,6 +36,7 @@ sub execute {
 
     $c->render(json => $result);
 }
+
 
 
 1;
