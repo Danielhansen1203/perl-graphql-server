@@ -26,7 +26,7 @@ my $result = GraphQL::Execution::execute(
     $data->{variables} || {},
     $schema->{root_value}
 );
-$c->app->log->debug("1");
+warn "Step 1";
 
     $c->render(json => $result);
 }
