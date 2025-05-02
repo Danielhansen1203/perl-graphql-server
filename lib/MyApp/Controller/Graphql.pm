@@ -7,7 +7,7 @@ my $schema;
 sub execute {
     my $c = shift;
 
-    $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);  # eller graphql_schema()
+    $schema ||= MyApp::Schema::Graphql::build();  # eller graphql_schema()
 
     my $data = $c->req->json;
 

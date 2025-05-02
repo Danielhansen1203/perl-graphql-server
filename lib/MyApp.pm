@@ -8,6 +8,9 @@ sub startup {
 
     $self->config(hypnotoad => { listen => ['http://*:3000'] });
 
+    $self->helper(snmp_model => sub { MyApp::Model::SNMP->new });
+
+
     my $snmp    = MyApp::Model::SNMP->new;
     my $schema  = MyApp::Schema::Graphql::build($snmp);
 
