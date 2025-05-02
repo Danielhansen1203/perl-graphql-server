@@ -1,9 +1,8 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib 'lib';
-use MyApp;
+use FindBin;
+use lib "$FindBin::Bin/lib";
 
-$ENV{HYPNOTOAD_FOREGROUND} = 1;
-
-MyApp->new->start;
+use Mojolicious::Commands;
+Mojolicious::Commands->start_app('MyApp');
