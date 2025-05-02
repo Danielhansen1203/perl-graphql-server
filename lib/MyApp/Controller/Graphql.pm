@@ -12,15 +12,11 @@ sub execute {
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
-
     $c->app->log->debug("RAW JSON data: " . Dumper($data));
 
-    unless ($data->{query} && $data->{query} =~ /\S/) {
-        return $c->render(status => 400, json => { error => 'Missing or empty GraphQL query' });
-    }
-
+    # Undgå fejl hvis operationName er et hash
     my $opname = $data->{operationName};
-    $opname = undef unless defined($opname) && !ref($opname);  # <- fix her
+    $opname = undef unless defined($opname) && !ref($opname);
 
     my $result = GraphQL::Execution::execute(
         $schema->{schema},
@@ -33,8 +29,5 @@ sub execute {
 
     $c->render(json => $result);
 }
-
-
-
 
 1;
