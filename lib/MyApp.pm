@@ -13,6 +13,7 @@ sub startup {
     $self->plugin(GraphQL => $schema);
 
     my $r = $self->routes;
+    $r->get('/')->to(cb => sub { shift->render(text => 'GraphQL app is running') });
     $r->post('/graphql')->to('GraphQL#execute');
     $r->get('/')->to('main#index');
 }
