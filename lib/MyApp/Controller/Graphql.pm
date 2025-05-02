@@ -18,14 +18,15 @@ sub execute {
     my $opname = $data->{operationName};
     $opname = undef unless defined($opname) && !ref($opname);
 
-    my $result = GraphQL::Execution::execute(
-        $schema->{schema},
-        $data->{query},
-        $opname,
-        undef,
-        $data->{variables} || {},
-        $schema->{root_value}
-    );
+my $result = GraphQL::Execution::execute(
+    $schema->{schema},
+    $data->{query},
+    undef,
+    undef,
+    $data->{variables} || {},
+    $schema->{root_value}
+);
+
 
     $c->render(json => $result);
 }
