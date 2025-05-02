@@ -4,7 +4,6 @@ use warnings;
 use GraphQL::Schema;
 
 sub build {
-    warn "Step 2";
     my ($snmp_model) = @_;
 
     my $sdl = <<'GRAPHQL';
@@ -13,18 +12,20 @@ type Query {
   hejAbkat: String
 }
 GRAPHQL
-
+warn "Steps 2";
     my $root_value = {
         GetSNMPInfo => sub {
             my ($args) = @_;
             return $snmp_model->get_snmp_info($args->{ip}, $args->{oid});
         },
         hejAbkat => sub {
+            warn "Steps 3";
             return "Hvis dette virker er det insane!";
         },
     };
 
     return {
+        warn "Steps 4";
         schema      => GraphQL::Schema->from_doc($sdl),
         root_value  => $root_value,
     };
