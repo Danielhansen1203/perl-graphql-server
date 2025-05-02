@@ -26,8 +26,8 @@ my $result = GraphQL::Execution::execute(
     $schema->{root_value}
 );
 
-    $c->render(json => $result);
-    $c->app->log->debug("RAW JSON data: " . Dumper($c->render(json => $result)));
+    my $a = $c->render(json => $result);
+    $c->app->log->debug("RAW JSON data: " . Dumper($a));
 }
 
 1;
