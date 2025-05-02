@@ -4,18 +4,19 @@ use MyApp::Schema::Graphql;
 
 my $schema;
 
-sub graphql {
+sub execute {
     my $c = shift;
 
-    $schema ||= MyApp::Schema::Graphql->graphql_schema($c->app->snmp_model);
+    $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);  # eller graphql_schema()
 
-    my $data = $c->req->json // {};
+    my $data = $c->req->json;
 
-    my $result = $schema->execute(
+    my $result = $schema->{schema}->execute(
         $data->{query},
         undef,
         undef,
-        $data->{variables} || {}
+        $data->{variables} || {},
+        $schema->{root_value}
     );
 
     $c->render(json => $result);
