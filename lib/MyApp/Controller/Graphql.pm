@@ -8,26 +8,27 @@ my $schema;
 
 sub execute {
     my $c = shift;
+
     $schema ||= MyApp::Schema::Graphql::build($c->app->snmp_model);
 
     my $data = $c->req->json || {};
-    
 
-    # Undgå fejl hvis operationName er et hash
+    $c->app->log->debug("RAW JSON data: " . Dumper($data));
+
+    # Beskyt operationName
     my $opname = $data->{operationName};
     $opname = undef unless defined($opname) && !ref($opname);
 
-my $result = GraphQL::Execution::execute(
-    $schema->{schema},
-    $data->{query},
-    undef,
-    undef,
-    $data->{variables} || {},
-    $schema->{root_value}
-);
+    my $result = GraphQL::Execution::execute(
+        $schema->{schema},
+        $data->{query},
+        $opname,
+        undef,
+        $data->{variables} || {},
+        $schema->{root_value}
+    );
 
-    my $a = $c->render(json => $result);
-    $c->app->log->debug("RAW JSON data: " . Dumper($a));
+    $c->render(json => $result);
 }
 
 1;
