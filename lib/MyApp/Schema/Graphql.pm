@@ -20,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  changeLightState(entity_id: String!): String
+  changeLightState(entity_id: String!, state: Boolean!): String
 }
 GRAPHQL
 
