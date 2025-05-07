@@ -10,11 +10,11 @@ my $ua = Mojo::UserAgent->new;
 
 sub changeLightState {
             my ($class, $entity_id, $state) = @_;
-            my $lightFunc = ""
+            my $lightFunc = "";
             if ($state = true) {
                 $lightFunc = "turn_on";
             } else {
-                $lightFunc = "turn_off"
+                $lightFunc = "turn_off";
             }
             my $tx = $ua->post("$ha_url/api/services/light/$lightFunc" => {
                 Authorization => "Bearer $ha_token",
