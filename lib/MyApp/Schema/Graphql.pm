@@ -21,6 +21,7 @@ type Query {
 
 type Mutation {
   turnOnLight(entity_id: String!): String
+  turnOffLight(entity_id: String!): String
 }
 GRAPHQL
 
@@ -46,12 +47,27 @@ GRAPHQL
             } => json => {
                 entity_id => $entity_id
             });
-
             my $res = $tx->result;
             return $res->is_success
                 ? "Tændt: $entity_id"
                 : "Fejl: " . $res->message;
         },
+        turnOffLight => sub {
+            my ($args) = @_;
+            my $entity_id = $args->{entity_id};
+
+            my $tx = $ua->post("$ha_url/api/services/light/turn_off" => {
+                Authorization => "Bearer $ha_token",
+                'Content-Type' => 'application/json'
+            } => json => {
+                entity_id => $entity_id
+            });
+            my $res = $tx->result;
+            return $res->is_success
+                ? "Slukket: $entity_id"
+                : "Fejl: " . $res->message;
+        },
+
     };
 
     return {
