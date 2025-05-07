@@ -11,7 +11,7 @@ my $ua = Mojo::UserAgent->new;
 sub changeLightState {
             my ($class, $entity_id, $state) = @_;
             my $lightFunc = "";
-            if ($state = true) {
+            if ($state) {
                 $lightFunc = "turn_on";
             } else {
                 $lightFunc = "turn_off";
@@ -27,14 +27,5 @@ sub changeLightState {
                 ? "$lightFunc: $entity_id"
                 : "Fejl: " . $res->message;
         }
-
-sub returnMsg {
-    my ($self, $tx, $onState) = @_;
-    my $res = $tx->result;
-            return $res->is_success
-                ? "Slukket: $entity_id"
-                : "Fejl: " . $res->message;
-}
-
 
 1;
