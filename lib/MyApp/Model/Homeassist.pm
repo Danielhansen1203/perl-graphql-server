@@ -1,4 +1,4 @@
-package MyApp::Schema::Homeassist;
+package MyApp::Model::Homeassist;
 use strict;
 use warnings;
 use Mojo::UserAgent;
