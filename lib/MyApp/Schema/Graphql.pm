@@ -12,7 +12,6 @@ my $ua = Mojo::UserAgent->new;
 
 sub build {
     my ($snmp_model) = @_;
-    my ($homeAssist_model) = @_;
 
     my $sdl = <<'GRAPHQL';
 type Query {
@@ -39,7 +38,7 @@ GRAPHQL
 
         changeLightState => sub {
             my ($args) = @_;
-            return MyApp::Model::HomeAssistant->changeLightState($args->{entity_id}, $args->{state});
+            return MyApp::Model::Homeassist->changeLightState($args->{entity_id}, $args->{state});
         },
 
     };
