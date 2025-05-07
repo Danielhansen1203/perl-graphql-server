@@ -1,7 +1,7 @@
 package MyApp::Schema::Graphql;
 use strict;
 use warnings;
-
+use MyApp::Model::Homeassist;
 use GraphQL::Schema;
 use Mojo::UserAgent;
 
@@ -12,6 +12,7 @@ my $ua = Mojo::UserAgent->new;
 
 sub build {
     my ($snmp_model) = @_;
+    my ($homeAssist_model) = @_;
 
     my $sdl = <<'GRAPHQL';
 type Query {
@@ -20,8 +21,7 @@ type Query {
 }
 
 type Mutation {
-  turnOnLight(entity_id: String!): String
-  turnOffLight(entity_id: String!): String
+  changeLightState(entity_id: String!): String
 }
 GRAPHQL
 
@@ -37,35 +37,9 @@ GRAPHQL
             return $snmp_model->get_interface_status($args->{ip}, $args->{oid});
         },
 
-        turnOnLight => sub {
+        changeLightState => sub {
             my ($args) = @_;
-            my $entity_id = $args->{entity_id};
-
-            my $tx = $ua->post("$ha_url/api/services/light/turn_on" => {
-                Authorization => "Bearer $ha_token",
-                'Content-Type' => 'application/json'
-            } => json => {
-                entity_id => $entity_id
-            });
-            my $res = $tx->result;
-            return $res->is_success
-                ? "Tændt: $entity_id"
-                : "Fejl: " . $res->message;
-        },
-        turnOffLight => sub {
-            my ($args) = @_;
-            my $entity_id = $args->{entity_id};
-
-            my $tx = $ua->post("$ha_url/api/services/light/turn_off" => {
-                Authorization => "Bearer $ha_token",
-                'Content-Type' => 'application/json'
-            } => json => {
-                entity_id => $entity_id
-            });
-            my $res = $tx->result;
-            return $res->is_success
-                ? "Slukket: $entity_id"
-                : "Fejl: " . $res->message;
+            return MyApp::Model::HomeAssistant->changeLightState($args->{entity_id}, $args->{state});
         },
 
     };
