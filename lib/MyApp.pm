@@ -1,20 +1,29 @@
 package MyApp;
 use Mojo::Base 'Mojolicious';
 use MyApp::Model::SNMP;
+use MyApp::Model::Homeassist;
 use MyApp::Schema::Graphql;
 
 sub startup {
+
     my $self = shift;
 
-    $self->config(hypnotoad => { listen => ['http://*:3000'] });
+    $self->helper(homeassist => sub {
+        my $c = shift;
+        MyApp::Model::Homeassist->new(logger => $c->app->log);
+    });
 
-    $self->helper(snmp_model => sub { MyApp::Model::SNMP->new });
+    $self->helper(snmp_model => sub {
+        my $c = shift;
+        MyApp::Model::SNMP->new(logger => $c->app->log);
+    });
 
 
-    
+
+    $self->config(hypnotoad => { listen => ['http://*:3000'] });    
+
     my $r = $self->routes;
     $r->get('/')->to('main#index');
-    #$r->get('/')->to(cb => sub { shift->render(text => 'GraphQL app is running') });
     $r->post('/graphql')->to('graphql#execute');
     
 }

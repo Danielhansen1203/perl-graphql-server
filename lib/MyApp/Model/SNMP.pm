@@ -1,10 +1,10 @@
 package MyApp::Model::SNMP;
 use Moo;
 use Net::SNMP;
+use base 'MyApp::Model::Base';
 
 sub get_snmp_info {
-    my ($self, $ip, $oid) = @_;
-
+    my ($class, $ip, $oid) = @_;
     my ($session, $error) = Net::SNMP->session(
         -hostname  => $ip,
         -community => 'public',
