@@ -23,8 +23,8 @@ sub startup {
   my $r = $self->routes;
   $r->get('/')->to('main#index');
   $r->get('/childconnect')->to('childconnect#index');
-  $r->post('/childconnect/save')->to('main#save');
-  $r->post('/childconnect/del')->to('main#del');
+  $r->post('/childconnect/save')->to('childconnect#save');
+  $r->post('/childconnect/del')->to('childconnect#del');
 
 
   # GraphQL endpoint
