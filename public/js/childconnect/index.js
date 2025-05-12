@@ -111,7 +111,7 @@ window.addEventListener('load', () => {
   });
 
   document.getElementById('saveBtn').addEventListener('click', () => {
-    fetch('save', {
+    fetch('childconnect/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nodes, edges })
@@ -121,7 +121,7 @@ window.addEventListener('load', () => {
   });
 
   document.getElementById('delBtn').addEventListener('click', () => {
-    fetch('del', {
+    fetch('childconnect/del', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nodes, edges })
