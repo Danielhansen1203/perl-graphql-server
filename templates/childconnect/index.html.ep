@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>Interaktiv Persongraf</title>
+  <style>
+    #chart { width: 600px; height: 600px; margin: 20px auto; }
+    .controls { text-align: center; margin: 10px; }
+    #peopleList { max-width: 600px; margin: 0 auto; }
+    table { border-collapse: collapse; margin: 10px auto; }
+    th, td { border: 1px solid #ccc; padding: 5px; }
+    .person-row input[type="color"] { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center">Interaktiv Persongraf</h1>
+  <div id="chart"></div>
+  <div class="controls">
+    <input id="newName" placeholder="Skriv navn">
+    <button id="addBtn">Tilføj Person</button>
+    <button id="saveBtn">Gem</button>
+    <button id="delBtn">Slet</button>
+  </div>
+  <div id="peopleList"></div>
+
+  <script>
+    // Data initialisation with defaults
+    window.edges = <%== stash('edges_json') || '[]' %>;
+    window.nodes = <%== stash('nodes_json') || '[]' %>;
+</script>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="/js/childconnect/index.js"></script>
+</body>
+</html>

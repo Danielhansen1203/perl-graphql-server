@@ -2,8 +2,10 @@ package MyApp::Schema::Graphql;
 use strict;
 use warnings;
 use GraphQL::Schema;
+use MyApp::Model::Homeassist;
+use MyApp::Model::SNMP;
 
-# ✅ Schema bygges kun én gang (SDL)
+# Schema bygges kun én gang (SDL)
 sub schema {
     my $sdl = <<'GRAPHQL';
 type Query {
@@ -19,7 +21,7 @@ GRAPHQL
     return GraphQL::Schema->from_doc($sdl);
 }
 
-# ✅ Root value bygges pr. request, med adgang til $c
+# Root value bygges pr. request, med adgang til $c
 sub build_root {
     my ($c) = @_;
 
